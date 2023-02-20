@@ -15,4 +15,3 @@ export class UserKey extends BaseModel {
   public user: BelongsTo<typeof User>
 
 }
-// 7:16
