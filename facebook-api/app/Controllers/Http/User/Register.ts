@@ -1,7 +1,7 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { StoreValidator } from 'App/Validators/User/Register'
 import { User } from 'App/Models'
-import faker from 'faker'
+import { faker } from '@faker-js/faker'
 
 export default class UserRegistersController {
 
@@ -14,6 +14,8 @@ export default class UserRegistersController {
     const key = user.related('keys').create({key: faker.datatype.uuid() + new Date().getTime() })
 
     const link = `${redirectUrl.replace(/\/$/, '')}/${key}`
+
+    // envio do email
 
   }
 
