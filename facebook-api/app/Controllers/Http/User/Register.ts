@@ -11,7 +11,9 @@ export default class UserRegistersController {
 
     await user.save()
 
-    const key = user.related('keys').create({key: faker.datatype.uuid() + new Date().getTime() })
+    const key = faker.datatype.uuid() + new Date().getTime()
+
+    user.related('keys').create({ key })
 
     const link = `${redirectUrl.replace(/\/$/, '')}/${key}`
 
