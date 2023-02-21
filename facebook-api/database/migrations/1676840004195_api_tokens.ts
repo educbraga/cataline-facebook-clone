@@ -10,6 +10,12 @@ export default class extends BaseSchema {
       table.string('name').notNullable()
       table.string('type').notNullable()
       table.string('token', 64).notNullable().unique()
+      
+      /**
+        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
+      */
+      table.timestamp('created_at', { useTz: true })
+      table.timestamp('updated_at', { useTz: true })
     })
   }
 
