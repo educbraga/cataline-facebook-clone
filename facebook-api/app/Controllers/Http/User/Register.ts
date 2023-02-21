@@ -13,7 +13,7 @@ export default class UserRegistersController {
 
     const key = faker.datatype.uuid() + new Date().getTime()
 
-    user.related('keys').create({ key })
+    user.related('keys').create({  key })
 
     const link = `${redirectUrl.replace(/\/$/, '')}/${key}`
 
