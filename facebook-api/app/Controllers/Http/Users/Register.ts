@@ -1,6 +1,6 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { StoreValidator } from 'App/Validators/User/Register'
-import { User } from 'App/Models'
+import { User, UserKey } from 'App/Models'
 import { faker } from '@faker-js/faker'
 import Mail from '@ioc:Adonis/Addons/Mail'
 
@@ -28,7 +28,12 @@ export default class UserRegistersController {
     })
   }
 
-  public async show({}: HttpContextContract) {}
+  public async show({ params }: HttpContextContract) {
+    const userKey = await UserKey.findByOrFail('key', params.key)
+    const user = await userKey.related('user').query().firstOrFail()
+
+    return user
+  }
 
   public async update({}: HttpContextContract) {}
 
