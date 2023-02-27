@@ -7,7 +7,7 @@ import Database from '@ioc:Adonis/Lucid/Database'
 
 export default class UserRegistersController {
   public async store({ request }: HttpContextContract) {
-    await Database.transaction( async (trx) => {
+    await Database.transaction(async (trx) => {
       const { email, redirectUrl } = await request.validate(StoreValidator)
       const user = new User()
 
