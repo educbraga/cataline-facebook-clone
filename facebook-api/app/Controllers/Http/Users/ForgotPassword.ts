@@ -1,21 +1,14 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { StoreValidator, UpdateValidator } from 'App/Validators/User/ForgotPassword'
+import Mail from '@ioc:Adonis/Addons/Mail'
 import { User, UserKey } from 'App/Models'
 import { faker } from '@faker-js/faker'
-import Mail from '@ioc:Adonis/Addons/Mail'
-import Database from '@ioc:Adonis/Lucid/Database'
 
-export default class ForgotPasswordController {
+export default class UserForgotPasswordController {
   public async store({ request }: HttpContextContract) {
-    await Database.transaction(async (trx) => {
       const { email, redirectUrl } = await request.validate(StoreValidator)
-      const user = new User()
 
-      user.useTransaction(trx)
-
-      user.email = email
-
-      await user.save()
+      const user = await User.findByOrFail('email', email)
 
       const key = faker.datatype.uuid() + new Date().getTime()
 
@@ -28,13 +21,13 @@ export default class ForgotPasswordController {
       await Mail.send((message) => {
         message.to(email)
         message.from('contato@facebook.com', 'Facebook')
-        message.subject('Criação de conta')
-        message.htmlView('emails/forgotPassword', { link })
+        message.subject('Recuperação de conta')
+        message.htmlView('emails/forgot-password', { link })
       })
-    })
   }
 
   public async show({ params }: HttpContextContract) {
+    // await UserKey.findByOrFail('key', params.key)
     const userKey = await UserKey.findByOrFail('key', params.key)
     const user = await userKey.related('user').query().firstOrFail()
 
@@ -42,20 +35,20 @@ export default class ForgotPasswordController {
   }
 
   public async update({ request, response }: HttpContextContract) {
-    const { key, name, password } = await request.validate(UpdateValidator)
+    const { key, password } = await request.validate(UpdateValidator)
 
     const userKey = await UserKey.findByOrFail('key', key)
 
     const user = await userKey.related('user').query().firstOrFail()
 
-    const username = name.split(' ')[0].toLocaleLowerCase() + new Date().getTime()
+    // const username = name.split(' ')[0].toLocaleLowerCase() + new Date().getTime()
 
-    user.merge({ name, password, username })
+    user.merge({ password })
 
     await user.save()
 
     await userKey.delete()
 
-    return response.ok({ message: 'Ok' })
+    return response.ok({ message: 'password changed successfully' })
   }
 }
