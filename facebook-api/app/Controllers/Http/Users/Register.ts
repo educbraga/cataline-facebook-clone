@@ -23,7 +23,7 @@ export default class UserRegistersController {
 
       const link = `${redirectUrl.replace(/\/$/, '')}/${key}`
 
-      // envio do email
+      // envio do email | mailtrap
 
       await Mail.send((message) => {
         message.to(email)
