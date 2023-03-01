@@ -6,24 +6,24 @@ import { faker } from '@faker-js/faker'
 
 export default class UserForgotPasswordController {
   public async store({ request }: HttpContextContract) {
-      const { email, redirectUrl } = await request.validate(StoreValidator)
+    const { email, redirectUrl } = await request.validate(StoreValidator)
 
-      const user = await User.findByOrFail('email', email)
+    const user = await User.findByOrFail('email', email)
 
-      const key = faker.datatype.uuid() + new Date().getTime()
+    const key = faker.datatype.uuid() + new Date().getTime()
 
-      user.related('keys').create({ key })
+    user.related('keys').create({ key })
 
-      const link = `${redirectUrl.replace(/\/$/, '')}/${key}`
+    const link = `${redirectUrl.replace(/\/$/, '')}/${key}`
 
-      // envio do email | mailtrap
+    // envio do email | mailtrap
 
-      await Mail.send((message) => {
-        message.to(email)
-        message.from('contato@facebook.com', 'Facebook')
-        message.subject('Recuperação de conta')
-        message.htmlView('emails/forgot-password', { link })
-      })
+    await Mail.send((message) => {
+      message.to(email)
+      message.from('contato@facebook.com', 'Facebook')
+      message.subject('Recuperação de conta')
+      message.htmlView('emails/forgot-password', { link })
+    })
   }
 
   public async show({ params }: HttpContextContract) {
