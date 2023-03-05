@@ -7,6 +7,10 @@ export default class extends BaseSchema {
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
+      table.integer('owner_id').notNullable()
+      table.enum('file_category', fileCategories).notNullable()
+      table.string('file_name').notNullable()
+      
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
