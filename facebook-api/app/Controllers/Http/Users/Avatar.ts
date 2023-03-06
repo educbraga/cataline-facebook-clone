@@ -1,5 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import { UpdateValidator } from 'App/Validators/User/Register'
+import { UpdateValidator } from 'App/Validators/User/Avatar'
 import Application from '@ioc:Adonis/Core/Application'
 import Database from '@ioc:Adonis/Lucid/Database'
 
