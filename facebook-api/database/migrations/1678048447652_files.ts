@@ -10,13 +10,7 @@ export default class extends BaseSchema {
       table.integer('owner_id').notNullable()
       table.enum('file_category', fileCategories).notNullable()
       table.string('file_name').notNullable()
-      
-
-      /**
-       * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
-       */
-      table.timestamp('created_at', { useTz: true })
-      table.timestamp('updated_at', { useTz: true })
+    
     })
   }
 
