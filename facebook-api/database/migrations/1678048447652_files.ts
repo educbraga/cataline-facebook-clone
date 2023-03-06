@@ -4,7 +4,7 @@ import { fileCategories } from 'App/Utils'
 export default class extends BaseSchema {
   protected tableName = 'files'
 
-  public async up () {
+  public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table.integer('owner_id').notNullable()
@@ -14,7 +14,7 @@ export default class extends BaseSchema {
     })
   }
 
-  public async down () {
+  public async down() {
     this.schema.dropTable(this.tableName)
   }
 }
