@@ -6,7 +6,7 @@ export default class UserMainController {
   public async show({ auth }: HttpContextContract) {
     const user = auth.user!
 
-    // user.load('avatar')
+    user.load('avatar')
 
     return user
   }
