@@ -3,16 +3,16 @@ import { FileCategory } from 'App/Utils'
 import Env from '@ioc:Adonis/Core/Env'
 
 export default class File extends BaseModel {
-  @column({ isPrimary: true })
+  @column({ isPrimary: true }, {serializeAs: null})
   public id: number
 
-  @column()
+  @column({serializeAs: null})
   public fileCategory: FileCategory
 
-  @column()
+  @column({serializeAs: null})
   public fileName: string
 
-  @column()
+  @column({serializeAs: null})
   public ownerId: number
 
   @computed()
