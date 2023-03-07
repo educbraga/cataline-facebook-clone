@@ -3,7 +3,7 @@ import { FileCategory } from 'App/Utils'
 import Env from '@ioc:Adonis/Core/Env'
 
 export default class File extends BaseModel {
-  @column({ isPrimary: true }, {serializeAs: null})
+  @column({ isPrimary: true, serializeAs: null})
   public id: number
 
   @column({serializeAs: null})
