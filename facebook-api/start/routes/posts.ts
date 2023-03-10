@@ -10,4 +10,4 @@ Route.resource('/posts', 'Posts/Main')
 		destroy: ['auth'],
 	})
 
-Route.post('/post/:id/media', 'Posts/Media.store').middleware('auth')
+Route.post('/posts/:id/media', 'Posts/Media.store').middleware('auth')
