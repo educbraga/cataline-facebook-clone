@@ -25,7 +25,18 @@ export default class PostsMainController {
     return post 
   }
 
-  public async update({}: HttpContextContract) {}
+  public async update({ request, response, params, auth }: HttpContextContract) {
+    
+
+    const data = await request.validate(UpdateValidator)
+    const post = await Post.findOrFail(params.id)
+
+    if (auth.user!.id !== post.userId) {
+      return response.unauthorized()
+    }
+
+    await post.merge(data).save()
+  }
 
   public async destroy({}: HttpContextContract) {}
 }
