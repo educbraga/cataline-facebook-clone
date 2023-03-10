@@ -8,3 +8,5 @@ Route.resource('/posts', 'Posts/Main')
 		update: ['auth'],
 		destroy: ['auth'],
 	})
+
+Route.post('/post/:id/media', 'Posts/Media.store').middleware('auth')
