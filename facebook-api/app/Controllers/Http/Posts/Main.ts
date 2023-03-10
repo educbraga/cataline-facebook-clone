@@ -1,6 +1,8 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { StoreValidator, UpdateValidator } from 'App/Validators/Post/Main'
+import Application from '@ioc:Adonis/Core/Application'
 import { User, Post } from 'App/Models'
+import fs from 'fs'
 
 export default class PostsMainController {
   public async index({ request, auth }: HttpContextContract) {
@@ -9,6 +11,7 @@ export default class PostsMainController {
     const user = (await User.findByOrFail('username', username)) || auth.user!
 
     await user.load('posts', (query) => {
+      query.orderBy('id', 'desc')
       query.preload('user', (query) => {
         query.select(['id', 'name', 'username'])
         query.preload('avatar')
@@ -26,8 +29,6 @@ export default class PostsMainController {
   }
 
   public async update({ request, response, params, auth }: HttpContextContract) {
-    
-
     const data = await request.validate(UpdateValidator)
     const post = await Post.findOrFail(params.id)
 
@@ -40,5 +41,21 @@ export default class PostsMainController {
     return post
   }
 
-  public async destroy({}: HttpContextContract) {}
+  public async destroy({ response, params, auth }: HttpContextContract) {
+    const post = await Post.findOrFail(params.id)
+
+    if (auth.user!.id !== post.userId) {
+      return response.unauthorized()
+    }
+
+    await post.load('media')
+
+    if (post.media) {
+      fs.unlinkSync(Application.tmpPath('uploads', post.media.filename))
+
+      await post.media.delete()
+    }
+
+    await post.delete()
+  }
 }
