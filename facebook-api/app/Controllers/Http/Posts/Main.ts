@@ -36,6 +36,8 @@ export default class PostsMainController {
     }
 
     await post.merge(data).save()
+
+    return post
   }
 
   public async destroy({}: HttpContextContract) {}
