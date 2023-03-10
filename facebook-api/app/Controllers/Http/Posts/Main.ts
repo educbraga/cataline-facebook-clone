@@ -18,7 +18,12 @@ export default class PostsMainController {
     return user. posts
   }
 
-  public async store({}: HttpContextContract) {}
+  public async store({ request, auth }: HttpContextContract) {
+    const data = await request.validate(StoreValidator)
+    const post = await auth.user!.related('posts').create(data)
+    
+    return post 
+  }
 
   public async update({}: HttpContextContract) {}
 
