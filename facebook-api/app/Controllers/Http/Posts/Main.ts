@@ -51,7 +51,7 @@ export default class PostsMainController {
     await post.load('media')
 
     if (post.media) {
-      fs.unlinkSync(Application.tmpPath('uploads', post.media.filename))
+      fs.unlinkSync(Application.tmpPath('uploads', post.media.fileName))
 
       await post.media.delete()
     }
